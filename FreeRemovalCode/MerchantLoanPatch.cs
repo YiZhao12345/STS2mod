@@ -17,28 +17,15 @@ public static class MerchantLoanPatch
         IRunState? runState,
         bool isRestoringRoomStackBase)
     {
-        if (isRestoringRoomStackBase)
-        {
-            return;
-        }
-        
-        if (runState is not RunState concreteRunState)
-        {
-            return;
-        }
-        
+        if (isRestoringRoomStackBase) return;
+        if (runState is not RunState concreteRunState) return;
+
         Player? player = concreteRunState.Players.FirstOrDefault();
-        if (player == null)
-        {
-            return;
-        }
-        
-        // ⭐ 用官方 API 加金币（不要直接改 _gold）
+        if (player == null) return;
+
         PlayerCmd.GainGold(50m, player, true);
-        
-        // 用官方 API 加 Debt 诅咒到牌组
         CardPileCmd.AddCurseToDeck<Debt>(player);
-        
+
         MainFile.Logger.Info($"[Loan] 进了商人房：+50 金币 + 1 张 Debt");
     }
 }
